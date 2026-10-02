@@ -1,0 +1,20 @@
+>>> import jax
+>>> import jax.numpy as jnp
+>>> def f(x):
+...     return jnp.sin(x**2)
+>>> print(f"{jax.grad(f)(1.0):.4f}")                    #<1>
+1.0806
+>>> slopes = jax.vmap(jax.grad(f))(jnp.array([1.0, 2.0, 3.0]))   #<2>
+>>> print([f"{v:.4f}" for v in slopes])
+['1.0806', '-2.6146', '-5.4668']
+>>> fast = jax.jit(jax.grad(f))                         #<3>
+>>> print(f"{fast(1.0):.4f}")
+1.0806
+>>> x = jnp.arange(4.0)
+>>> y = x.at[0].set(5.0)                                #<4>
+>>> print(x, y)
+[0. 1. 2. 3.] [5. 1. 2. 3.]
+>>> key = jax.random.key(0)                             #<5>
+>>> k1, k2 = jax.random.split(key)
+>>> print(jnp.allclose(jax.random.normal(k1, (3,)), jax.random.normal(k1, (3,))))
+True

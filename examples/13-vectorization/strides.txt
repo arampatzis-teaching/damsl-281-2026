@@ -1,0 +1,15 @@
+>>> import numpy as np
+>>> x = np.arange(12, dtype=np.int64)
+>>> X = x.reshape(3, 4)                #<1>
+>>> print(X.dtype, X.nbytes)           #<2>
+int64 96
+>>> print(X.strides)                   #<3>
+(32, 8)
+>>> print(X.T.strides)                 #<4>
+(8, 32)
+>>> print(X.T.base is x)               #<5>
+True
+>>> print(X.flags['C_CONTIGUOUS'])     #<6>
+True
+>>> print(X.T.flags['C_CONTIGUOUS'], X.T.flags['F_CONTIGUOUS'])
+False True

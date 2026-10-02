@@ -1,0 +1,13 @@
+>>> import numpy as np, torch
+>>> from pinn import Constrained, d, points
+>>> _ = torch.manual_seed(0)
+>>> net = Constrained(lambda x: x**2 * torch.cos(np.pi * x), [64, 64])
+>>> X = points([(-1.0, 1.0), (0.0, 5.0)], 1000)                 #<1>
+>>> u = net(X)
+>>> u_x, u_t = d(u, X).split(1, dim=1)                          #<2>
+>>> u_xx = d(u_x, X)[:, :1]                                     #<3>
+>>> r = u_t - 2e-5 * u_xx - u + u**3
+>>> print(r.shape)
+torch.Size([1000, 1])
+>>> print(r.requires_grad)                                      #<4>
+True

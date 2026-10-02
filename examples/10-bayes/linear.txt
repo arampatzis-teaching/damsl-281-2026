@@ -1,0 +1,12 @@
+>>> import numpy as np
+>>> from bayes import gaussian_posterior
+>>> t = np.arange(1.0, 6.0)
+>>> rng = np.random.default_rng(0)
+>>> y = 2.5 + 0.9 * t + 0.8 * rng.standard_normal(5)                  #<1>
+>>> G = np.vander(t, 2, increasing=True)                              #<2>
+>>> m, C, log_ev = gaussian_posterior(G, y, 0.8**2 * np.eye(5),
+...                                   np.zeros(2), 5.0**2 * np.eye(2))
+>>> print(np.round(m, 3), np.round(np.sqrt(np.diag(C)), 3))
+[2.723 0.832] [0.827 0.25 ]
+>>> print(round(log_ev, 2))                                            #<3>
+-9.59

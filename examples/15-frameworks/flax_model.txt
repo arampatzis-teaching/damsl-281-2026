@@ -1,0 +1,11 @@
+>>> import jax
+>>> import jax.numpy as jnp
+>>> from flax import nnx
+>>> from models import MLP                              #<1>
+>>> model = MLP(1, 16, 1, rngs=nnx.Rngs(0))             #<2>
+>>> print(model(jnp.ones((5, 1))).shape)                #<3>
+(5, 1)
+>>> params = nnx.state(model, nnx.Param)                #<4>
+>>> leaves = jax.tree.leaves(params)
+>>> print(len(leaves), sum(leaf.size for leaf in leaves))
+4 49

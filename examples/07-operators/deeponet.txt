@@ -1,0 +1,12 @@
+>>> import torch
+>>> from operators import DeepONet, grid
+>>> _ = torch.manual_seed(0)
+>>> model = DeepONet(m=128, n_tau=64)                           #<1>
+>>> print(sum(w.numel() for w in model.parameters()))
+99457
+>>> u = torch.randn(5, 128)                                     #<2>
+>>> print(model(u, grid(256)).shape, model(u, grid(1024)).shape)   #<3>
+torch.Size([5, 256]) torch.Size([5, 1024])
+>>> ends = model(u, torch.tensor([-1.0, 1.0]))
+>>> print(torch.allclose(ends[:, 0], ends[:, 1], atol=1e-6))    #<4>
+True

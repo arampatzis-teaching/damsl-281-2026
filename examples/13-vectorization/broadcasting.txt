@@ -1,0 +1,18 @@
+>>> import numpy as np
+>>> X = np.arange(6.0).reshape(3, 2)
+>>> X - X.mean(axis=0)                    #<1>
+array([[-2., -2.],
+       [ 0.,  0.],
+       [ 2.,  2.]])
+>>> print(X.mean(axis=1).shape)           #<2>
+(3,)
+>>> print(X.mean(axis=1, keepdims=True).shape)
+(3, 1)
+>>> X - X.mean(axis=1, keepdims=True)     #<3>
+array([[-0.5,  0.5],
+       [-0.5,  0.5],
+       [-0.5,  0.5]])
+>>> X - X.mean(axis=1)                    #<4>
+Traceback (most recent call last):
+  ...
+ValueError: operands could not be broadcast together with shapes (3,2) (3,)

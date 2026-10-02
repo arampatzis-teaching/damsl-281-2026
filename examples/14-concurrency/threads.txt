@@ -1,0 +1,11 @@
+>>> import math
+>>> from concurrent.futures import ThreadPoolExecutor, as_completed
+>>> with ThreadPoolExecutor(max_workers=4) as pool:      #<1>
+...     results = list(pool.map(math.sqrt, [1, 4, 9, 16]))
+>>> print(results)                                       #<2>
+[1.0, 2.0, 3.0, 4.0]
+>>> with ThreadPoolExecutor(max_workers=4) as pool:
+...     futures = [pool.submit(math.sqrt, x) for x in [1, 4, 9, 16]]  #<3>
+...     done = [f.result() for f in as_completed(futures)]            #<4>
+>>> print(sorted(done))
+[1.0, 2.0, 3.0, 4.0]

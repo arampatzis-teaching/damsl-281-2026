@@ -1,0 +1,20 @@
+>>> import torch
+>>> from node import Field, odeint, adjoint_odeint
+>>> _ = torch.set_default_dtype(torch.float64)
+>>> def gradient(solve, steps):                                 #<1>
+...     torch.manual_seed(0)
+...     f = Field(1, width=16, depth=1)
+...     t = torch.linspace(0, 1, steps + 1)
+...     solve(f, torch.tensor([[0.4]]), t)[-1].sum().backward()
+...     return torch.cat([p.grad.flatten() for p in f.parameters()])
+>>> through = gradient(odeint, 40)                              #<2>
+>>> adjoint = gradient(adjoint_odeint, 40)
+>>> print(f"{(through - adjoint).norm() / through.norm():.1e}")
+3.0e-14
+>>> for steps in (10, 20, 40, 80):                              #<3>
+...     a, b = gradient(odeint, steps), gradient(adjoint_odeint, steps)
+...     print(f"{steps:3d}  {(a - b).norm() / a.norm():.1e}")
+ 10  7.6e-12
+ 20  4.8e-13
+ 40  3.0e-14
+ 80  2.1e-15

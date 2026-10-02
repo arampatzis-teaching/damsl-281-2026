@@ -1,0 +1,16 @@
+>>> import math, torch
+>>> from operators import FNO, grid
+>>> _ = torch.manual_seed(0)
+>>> model = FNO(width=32, modes=16, layers=4)                   #<1>
+>>> print(sum(w.numel() for w in model.parameters()))
+139713
+>>> u = torch.randn(3, 256)
+>>> shifted = model(torch.roll(u, 17, dims=-1))                 #<2>
+>>> print(torch.allclose(shifted, torch.roll(model(u), 17, dims=-1), atol=1e-6))
+True
+>>> f = lambda x: 0.5 * torch.sin(math.pi * x) + 0.3 * torch.cos(3 * math.pi * x)
+>>> with torch.no_grad():
+...     coarse = model(f(grid(128))[None])                      #<3>
+...     fine = model(f(grid(512))[None])
+>>> print(torch.allclose(coarse, fine[:, ::4], atol=1e-6))       #<4>
+True

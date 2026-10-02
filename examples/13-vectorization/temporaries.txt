@@ -1,0 +1,11 @@
+>>> import numpy as np
+>>> u = np.random.default_rng(0).random(1_000)
+>>> dt = 0.01
+>>> v = u + dt * (u - u**3)               #<1>
+>>> tmp = np.empty_like(u)                #<2>
+>>> _ = np.power(u, 3, out=tmp)           #<3>
+>>> _ = np.subtract(u, tmp, out=tmp)
+>>> _ = np.multiply(tmp, dt, out=tmp)
+>>> _ = np.add(u, tmp, out=u)             #<4>
+>>> print(np.allclose(u, v))
+True

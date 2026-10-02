@@ -1,0 +1,6 @@
+>>> import numpy as np
+>>> from sampling import ula
+>>> dt = 0.5
+>>> x = ula(lambda th: -th, [0.0], 200000, dt, np.random.default_rng(1))  #<1>
+>>> print(round(x.var(), 3), round(1 / (1 - dt / 4), 3))                 #<2>
+1.132 1.143

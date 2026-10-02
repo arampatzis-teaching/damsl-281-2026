@@ -1,0 +1,13 @@
+>>> import torch
+>>> x1 = torch.tensor(2.0, requires_grad=True)          #<1>
+>>> x2 = torch.tensor(3.0, requires_grad=True)
+>>> y = torch.sin(x1 * x2) + x2**3                      #<2>
+>>> print(type(y.grad_fn).__name__)                     #<3>
+AddBackward0
+>>> y.backward()                                        #<4>
+>>> print(f"{x1.grad.item():.4f}  {x2.grad.item():.4f}")
+2.8805  28.9203
+>>> y = torch.sin(x1 * x2) + x2**3
+>>> y.backward()                                        #<5>
+>>> print(f"{x1.grad.item():.4f}  {x2.grad.item():.4f}")
+5.7610  57.8407

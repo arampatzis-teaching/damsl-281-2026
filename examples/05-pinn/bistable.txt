@@ -1,0 +1,19 @@
+>>> import torch
+>>> from pinn import MLP, d, train
+>>> _ = torch.manual_seed(0)
+>>> u0, T = 0.1, 5.0
+>>> net = MLP([1, 32, 32, 1])
+>>> u = lambda t: u0 + (1 - torch.exp(-t)) * net(t)             #<1>
+>>> def loss():                                                 #<2>
+...     t = (T * torch.rand(512, 1)).requires_grad_(True)
+...     ut = u(t)
+...     return ((d(ut, t) - (ut - ut**3))**2).mean()
+>>> history = train(loss, net.parameters(), 2000)
+>>> print(f"{history[0]:.2f} -> {history[-1]:.1e}")             #<3>
+0.04 -> 4.0e-03
+>>> t = torch.tensor([[1.0], [3.0], [5.0]])
+>>> exact = u0 / torch.sqrt(u0**2 + (1 - u0**2) * torch.exp(-2 * t))
+>>> print(torch.cat([u(t), exact], 1).detach().round(decimals=3))   #<4>
+tensor([[0.0370, 0.2640],
+        [0.0080, 0.8960],
+        [0.0260, 0.9980]])
