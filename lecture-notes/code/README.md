@@ -1,7 +1,7 @@
 # Scientific Machine Learning — code
 
 Code and notebooks for the course, and the interpreter sessions printed in the
-lecture notes (`../main.tex`).
+lecture notes *Scientific Machine Learning*.
 
 | Folder | Contents |
 |---|---|
@@ -20,9 +20,6 @@ Poetry creates the virtual environment inside this folder (`.venv/`, see
 poetry install --with dev
 ```
 
-The notes for the book's own figures live in a separate project,
-`../simulations/`, with its own environment.
-
 ## Checking the sessions printed in the notes
 
 Every session in `examples/` is a doctest: the output printed in the notes is
@@ -32,8 +29,8 @@ the output Python produces. Run them all with
 poetry run pytest
 ```
 
-A session is included in the notes with `\lstinputlisting`, and the comments
-`#<1>`, `#<2>`, ... become the circled callouts explained under the listing.
+The comments `#<1>`, `#<2>`, ... in the sessions mark the circled numbers that
+the notes explain under each listing.
 
 ## Running the notebooks
 
