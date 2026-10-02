@@ -1,0 +1,15 @@
+>>> import torch
+>>> from torchdiffeq import odeint_adjoint
+>>> from node import Field, odeint
+>>> _ = torch.set_default_dtype(torch.float64)
+>>> def gradient(solve):
+...     torch.manual_seed(0)
+...     f = Field(1, width=16, depth=1)
+...     t = torch.linspace(0, 1, 41)
+...     solve(f, torch.tensor([[0.4]]), t)[-1].sum().backward()
+...     return torch.cat([p.grad.flatten() for p in f.parameters()])
+>>> ours = gradient(odeint)
+>>> library = gradient(lambda f, u0, t:                         #<1>
+...                    odeint_adjoint(f, u0, t, method="rk4"))
+>>> print(f"{(ours - library).norm() / ours.norm():.1e}")       #<2>
+1.2e-11

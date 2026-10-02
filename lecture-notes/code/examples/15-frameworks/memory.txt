@@ -1,0 +1,18 @@
+>>> import numpy as np, tracemalloc
+>>> from state import step_new, step_into
+>>> u = np.ones(10**6)
+>>> tracemalloc.start()
+>>> for _ in range(50):
+...     u = step_new(u, 0.01)
+>>> print(round(tracemalloc.get_traced_memory()[1] / 2**20), "MiB")     #<1>
+23 MiB
+>>> tracemalloc.stop()
+>>> u, out = np.ones(10**6), np.empty(10**6)
+>>> tracemalloc.start()
+>>> for _ in range(50):
+...     u = step_into(u, 0.01, out)                                     #<2>
+>>> print(round(tracemalloc.get_traced_memory()[1] / 2**20), "MiB")
+0 MiB
+>>> tracemalloc.stop()
+>>> print(u is out)                                                     #<3>
+True

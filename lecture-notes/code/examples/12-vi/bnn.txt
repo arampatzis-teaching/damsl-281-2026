@@ -1,0 +1,16 @@
+>>> import torch
+>>> import torch.nn.functional as F
+>>> from bnn import BayesLinear
+>>> _ = torch.manual_seed(0)
+>>> layer = BayesLinear(3, 2)
+>>> a = torch.tensor([[1.0, -2.0, 0.5]])
+>>> with torch.no_grad():
+...     _ = layer.rho_w.fill_(0.0), layer.rho_b.fill_(0.0)                #<1>
+...     h_local = layer(a.repeat(100000, 1), local=True)              #<2>
+...     h_weights = torch.cat([layer(a, local=False)
+...                            for _ in range(100000)])               #<3>
+...     s2 = F.softplus(torch.tensor(0.0))**2
+>>> fmt = lambda v: " ".join(f"{x:.1f}" for x in v.tolist())
+>>> print(fmt(h_local.var(0)), "|", fmt(h_weights.var(0)), "|",
+...       f"{float(s2 * (1 + 4 + 0.25 + 1)):.1f}")                     #<4>
+3.0 3.0 | 3.0 3.0 | 3.0

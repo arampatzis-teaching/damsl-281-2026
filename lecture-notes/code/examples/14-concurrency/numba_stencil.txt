@@ -1,0 +1,17 @@
+>>> import numpy as np
+>>> from numba import njit
+>>> @njit                                                  #<1>
+... def stencil(u, out):
+...     d = u.size
+...     for j in range(d):
+...         out[j] = u[(j + 1) % d] - 2 * u[j] + u[j - 1]
+...     return out
+>>> u = np.array([0.0, 1.0, 4.0, 9.0, 16.0])
+>>> out = np.empty_like(u)
+>>> print(stencil(u, out))                                 #<2>
+[ 17.   2.   2.   2. -23.]
+>>> reference = np.roll(u, -1) - 2 * u + np.roll(u, 1)
+>>> print(np.allclose(stencil(u, out), reference))         #<3>
+True
+>>> print(stencil.signatures)                              #<4>
+[(Array(float64, 1, 'C', False, aligned=True), Array(float64, 1, 'C', False, aligned=True))]

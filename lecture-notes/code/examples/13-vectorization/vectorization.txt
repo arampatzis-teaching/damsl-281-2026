@@ -1,0 +1,16 @@
+>>> import numpy as np
+>>> rng = np.random.default_rng(0)
+>>> a = rng.standard_normal(1_000_000)
+>>> b = rng.standard_normal(1_000_000)
+>>> def loop(a, b):                    #<1>
+...     s = 0.0
+...     for i in range(a.size):
+...         s += a[i] * b[i]
+...     return s
+>>> s_loop = loop(a, b)
+>>> s_vec = float(a @ b)               #<2>
+>>> print(abs(s_loop - s_vec) < 1e-6 * abs(s_vec))
+True
+>>> c = a * b                          #<3>
+>>> print(c.nbytes)
+8000000

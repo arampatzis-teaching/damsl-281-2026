@@ -1,0 +1,14 @@
+>>> import numpy as np
+>>> x = np.arange(10)
+>>> y = x[2:5]                       #<1>
+>>> print(y.base is x)
+True
+>>> y[0] = 99                        #<2>
+>>> print(x[2])
+99
+>>> z = x[[2, 3, 4]]                 #<3>
+>>> print(np.shares_memory(z, x))
+False
+>>> z[0] = -1                        #<4>
+>>> print(x[2])
+99

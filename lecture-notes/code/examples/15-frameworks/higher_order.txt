@@ -1,0 +1,18 @@
+>>> from functools import reduce
+>>> from euler import euler_step, euler_run, trajectory
+>>> decay = lambda u: -u                                  #<1>
+>>> print(round(euler_step(1.0, 0.01, decay), 4))
+0.99
+>>> print(round(euler_run(1.0, 0.01, 100, decay), 4))     #<2>
+0.366
+>>> def make_step(dt, f):                                 #<3>
+...     return lambda u: euler_step(u, dt, f)
+>>> step = make_step(0.01, decay)
+>>> print(round(reduce(lambda u, _: step(u), range(100), 1.0), 4))   #<4>
+0.366
+>>> starts = [1.0, 2.0, 3.0]
+>>> print([round(euler_run(u0, 0.01, 100, decay), 4) for u0 in starts])   #<5>
+[0.366, 0.7321, 1.0981]
+>>> states = trajectory(1.0, 0.01, 100, decay)            #<6>
+>>> print(len(states), round(states[0], 4), round(states[-1], 4))
+101 1.0 0.366

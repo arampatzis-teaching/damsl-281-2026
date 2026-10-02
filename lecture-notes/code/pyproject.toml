@@ -1,0 +1,45 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+
+[project]
+authors = [
+  { name = "Georgios Arampatzis", email = "georgios.arampatzis@uoc.gr" }
+]
+dependencies = [
+  "numpy (>=2.1,<3.0)",
+  "scipy (>=1.14,<2.0)",
+  "matplotlib (>=3.9,<4.0)",
+  "sympy (>=1.13,<2.0)",
+  "jupyter (>=1.1,<2.0)",
+  "ipykernel (>=6.29,<8.0)",
+  "line-profiler (>=4.1,<6.0)",
+  "threadpoolctl (>=3.5,<4.0)",
+  "numba (>=0.61,<0.64)",
+  "torch (>=2.6,<3.0)",
+  "jax (>=0.4.35,<0.9)",
+  "flax (>=0.10,<0.13)",
+  "torchdiffeq (>=0.2.5,<0.3.0)"
+]
+description = "Code and notebooks for the Scientific Machine Learning course, DAMSL, University of Crete"
+name = "sciml-code"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+version = "0.1.0"
+
+[project.optional-dependencies]
+dev = [
+  "pytest (>=8.3,<9.0)"
+]
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.3,<9.0"
+
+[tool.pytest.ini_options]
+# `poetry run pytest` checks every interpreter session printed in the notes
+addopts = "--doctest-glob=*.txt"
+doctest_optionflags = "ELLIPSIS NORMALIZE_WHITESPACE"
+testpaths = ["examples"]

@@ -1,0 +1,12 @@
+>>> from euler import EulerSolver
+>>> solver = EulerSolver(lambda u: -u, 0.01)
+>>> solver.start(1.0)
+>>> print(round(solver.step(), 4))      #<1>
+0.99
+>>> print(round(solver.step(), 4))      #<2>
+0.9801
+>>> print(round(solver.u, 4))           #<3>
+0.9801
+>>> solver.start(1.0)                   #<4>
+>>> print(round(solver.step(), 4))
+0.99

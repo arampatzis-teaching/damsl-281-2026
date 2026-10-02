@@ -1,0 +1,14 @@
+>>> import jax
+>>> import jax.numpy as jnp
+>>> from euler import euler_run, euler_scan
+>>> decay = lambda u: -u
+>>> run = lambda u0: euler_run(u0, 0.01, 100, decay)      #<1>
+>>> print([round(float(v), 4) for v in jax.vmap(run)(jnp.array([1.0, 2.0, 3.0]))])
+[0.366, 0.7321, 1.0981]
+>>> print(round(float(jax.grad(run)(1.0)), 4))            #<2>
+0.366
+>>> print(round(float(jax.jit(run)(1.0)), 4))             #<3>
+0.366
+>>> fast = jax.jit(lambda u0: euler_scan(u0, 0.01, 100, decay))   #<4>
+>>> print(round(float(fast(1.0)), 4))
+0.366

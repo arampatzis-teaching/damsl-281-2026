@@ -1,0 +1,12 @@
+>>> import numpy as np
+>>> from bayes import forward
+>>> times = np.linspace(0.2, 5.0, 25)
+>>> points = np.arange(0, 1024, 32)                                   #<1>
+>>> G, J = forward(1.0, 2e-5, points, times, sens=True)
+>>> print(G.shape, J.shape)
+(800,) (800, 2)
+>>> h = 1e-5
+>>> fd = (forward(1.0, 2e-5 * (1 + h), points, times)
+...       - forward(1.0, 2e-5 * (1 - h), points, times)) / (2e-5 * 2 * h)  #<2>
+>>> print(f"{np.linalg.norm(fd - J[:, 1]) / np.linalg.norm(fd):.0e}")
+1e-06
