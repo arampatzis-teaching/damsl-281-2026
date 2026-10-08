@@ -5,20 +5,20 @@ every worker and imports the function by name. A function defined in a notebook
 cell cannot be imported that way.
 """
 
+import multiprocessing
 import time
+from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
 
-CPU_SIZE = 20_000_000
 
-
-def cpu_work(n=CPU_SIZE):
+def cpu_work(n):
     """
     Run pure Python arithmetic, which holds the interpreter lock.
 
     Parameters
     ----------
-    n : int, optional
+    n : int
         Number of loop steps.
 
     Returns
@@ -67,13 +67,13 @@ def elementwise(a):
     return float(np.sin(a).sum())
 
 
-def chunk_work(args):
+def harmonics_shared(job):
     """
-    Read a slice of a shared array and return a quantity computed from it.
+    Compute `harmonics` of a piece read from a shared memory block.
 
     Parameters
     ----------
-    args : tuple
+    job : tuple
         ``(name, shape, dtype_str, start, stop)``: the name of the shared
         memory block, the shape and dtype name of the array stored in it, and
         the first and one-past-last row of the slice.
@@ -85,7 +85,7 @@ def chunk_work(args):
     """
     from multiprocessing import shared_memory
 
-    name, shape, dtype_str, start, stop = args
+    name, shape, dtype_str, start, stop = job
     shm = shared_memory.SharedMemory(name=name)
     try:
         data = np.ndarray(shape, dtype=np.dtype(dtype_str), buffer=shm.buf)
@@ -117,9 +117,9 @@ def harmonics(piece, terms=5):
     return float(total.sum())
 
 
-def sum_of_copy(piece):
+def harmonics_sent(piece):
     """
-    Compute the same quantity as `chunk_work`, from an array sent to the worker.
+    Compute `harmonics` of a piece that was copied to the worker.
 
     Parameters
     ----------
@@ -132,3 +132,29 @@ def sum_of_copy(piece):
         `harmonics` of `piece`.
     """
     return harmonics(piece)
+
+
+def warm_pool(n_workers):
+    """
+    Start a process pool and make sure that all its workers are running.
+
+    A pool starts its workers only when there is work for them. Giving each
+    worker a job of 0.1 s forces the pool to start all of them, so that a
+    timing that follows measures the work and not the start-up. The workers are
+    started with spawn, as in the notebooks.
+
+    Parameters
+    ----------
+    n_workers : int
+        Number of worker processes.
+
+    Returns
+    -------
+    concurrent.futures.ProcessPoolExecutor
+        The pool, with all its workers started. Use it in a ``with`` block.
+    """
+    pool = ProcessPoolExecutor(
+        max_workers=n_workers, mp_context=multiprocessing.get_context("spawn")
+    )
+    list(pool.map(wait, [0.1] * n_workers))
+    return pool

@@ -13,15 +13,13 @@ from concurrent.futures import ProcessPoolExecutor
 import numpy as np
 from scipy.integrate import solve_ivp
 
-SIGMA, BETA = 10.0, 8.0 / 3.0
 
-
-def largest_excursion(rho):                                            #<1>
-    """Integrates the Lorenz system and returns max |u_3| after the transient."""
+def largest_excursion(rho, sigma=10.0, beta=8.0 / 3.0):                #<1>
+    """Integrate the Lorenz system and return max |u_3| after the transient."""
     def field(t, u):
-        return [SIGMA * (u[1] - u[0]),
+        return [sigma * (u[1] - u[0]),
                 u[0] * (rho - u[2]) - u[1],
-                u[0] * u[1] - BETA * u[2]]
+                u[0] * u[1] - beta * u[2]]
 
     sol = solve_ivp(field, (0, 200), [1.0, 1.0, 1.0], method="DOP853",
                     rtol=1e-10, atol=1e-12, dense_output=True)
