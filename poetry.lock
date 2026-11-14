@@ -4,7 +4,7 @@
 dev = ["pytest"]
 
 [metadata]
-content-hash = "40e10eb1c6f3b78420c1cf772e036ff26128fe8f776c35ce326c9be72c05c54e"
+content-hash = "718d987707a861fcee076ec5183c455e2989b70bd06cae95818b22f41a4b308f"
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
 
@@ -1113,6 +1113,23 @@ test = ["aiohttp (!=4.0.0a0,!=4.0.0a1)", "numpy", "pytest", "pytest-asyncio (!=0
 test-downstream = ["aiobotocore (>=2.5.4,<3.0.0)", "dask[dataframe,test]", "moto[server] (>4,<5)", "pytest-timeout", "xarray"]
 test-full = ["adlfs", "aiohttp (!=4.0.0a0,!=4.0.0a1)", "backports-zstd ; python_version < \"3.14\"", "cloudpickle", "dask", "distributed", "dropbox", "dropboxdrivefs", "fastparquet", "fusepy", "gcsfs (>=2026.4.0)", "jinja2", "kerchunk", "libarchive-c", "lz4", "notebook", "numpy", "ocifs", "pandas (<3.0.0)", "panel", "paramiko", "pyarrow (>=1)", "pyftpdlib", "pygit2", "pytest", "pytest-asyncio (!=0.22.0)", "pytest-benchmark", "pytest-cov", "pytest-mock", "pytest-recording", "pytest-rerunfailures", "python-snappy", "requests", "s3fs (>=2026.6.0)", "smbprotocol", "tqdm", "urllib3", "zarr (<3.2.0)", "zstandard ; python_version < \"3.14\""]
 tqdm = ["tqdm"]
+
+[[package]]
+description = "Simple Python interface for Graphviz"
+files = [
+  { file = "graphviz-0.21-py3-none-any.whl", hash = "sha256:54f33de9f4f911d7e84e4191749cac8cc5653f815b06738c54db9a15ab8b1e42" },
+  { file = "graphviz-0.21.tar.gz", hash = "sha256:20743e7183be82aaaa8ad6c93f8893c923bd6658a04c32ee115edb3c8a835f78" }
+]
+groups = ["main"]
+name = "graphviz"
+optional = false
+python-versions = ">=3.9"
+version = "0.21"
+
+[package.extras]
+dev = ["Flake8-pyproject", "build", "flake8", "pep8-naming", "tox (>=3)", "twine", "wheel"]
+docs = ["sphinx (>=5,<7)", "sphinx-autodoc-typehints", "sphinx-rtd-theme (>=0.2.5)"]
+test = ["coverage", "pytest (>=7,<8.1)", "pytest-cov", "pytest-mock (>=3)"]
 
 [[package]]
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
@@ -4486,6 +4503,22 @@ version = "0.2.5"
 [package.dependencies]
 scipy = ">=1.4.0"
 torch = ">=1.5.0"
+
+[[package]]
+description = "A small package to create visualizations of PyTorch execution graphs"
+files = [
+  { file = "torchviz-0.0.3-py3-none-any.whl", hash = "sha256:5eab98d17cbe8a54727cfa6a527681cff613430fff8fc68f52302ca5fa26cdf1" },
+  { file = "torchviz-0.0.3.tar.gz", hash = "sha256:2e95f2fea7a31ec9549f2d6bbf446d75aeb6a9880fcf13e7dd843fdcdb4a3725" }
+]
+groups = ["main"]
+name = "torchviz"
+optional = false
+python-versions = "*"
+version = "0.0.3"
+
+[package.dependencies]
+graphviz = "*"
+torch = "*"
 
 [[package]]
 description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
