@@ -7,7 +7,7 @@ lecture notes *Scientific Machine Learning*.
 |---|---|
 | `notebooks/13-arrays-vectorization-memory` | arrays, vectorization, broadcasting, measuring (Chapter 13) |
 | `notebooks/14-concurrency-compilation` | threads, processes, shared memory, numba (Chapter 14) |
-| `notebooks/15-frameworks` | PyTorch, JAX, and Flax (Chapters 3 and 15) |
+| `notebooks/15-frameworks` | PyTorch, pure functions, JAX, and Flax (Chapters 3 and 15) |
 | `code/` | modules imported by the notebooks |
 | `examples/` | the interpreter sessions included in the notes |
 
@@ -19,6 +19,11 @@ Poetry creates the virtual environment inside this folder (`.venv/`, see
 ```bash
 poetry install --with dev
 ```
+
+The graph drawings of `notebooks/15-frameworks` also need the program
+[Graphviz](https://graphviz.org): `brew install graphviz` on macOS,
+`sudo apt install graphviz` on Ubuntu, or the installer from graphviz.org on
+Windows.
 
 ## Checking the sessions printed in the notes
 

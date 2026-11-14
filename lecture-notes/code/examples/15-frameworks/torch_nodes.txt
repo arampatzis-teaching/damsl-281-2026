@@ -1,0 +1,22 @@
+>>> import torch
+>>> x1 = torch.tensor(2.0, requires_grad=True)
+>>> x2 = torch.tensor(3.0, requires_grad=True)
+>>> v3 = x1 * x2                                         #<1>
+>>> v4 = x2**3
+>>> v5 = torch.sin(v3)
+>>> v6 = v4 + v5
+>>> print(x1.is_leaf, x1.grad_fn)                        #<2>
+True None
+>>> print(type(v6.grad_fn).__name__)                     #<3>
+AddBackward0
+>>> def parents(node):
+...     return [type(f).__name__ for f, _ in node.next_functions]
+>>> print(parents(v6.grad_fn))                           #<4>
+['PowBackward0', 'SinBackward0']
+>>> print(parents(v3.grad_fn))
+['AccumulateGrad', 'AccumulateGrad']
+>>> saved = v3.grad_fn                                   #<5>
+>>> print(saved._saved_self.item(), saved._saved_other.item())
+2.0 3.0
+>>> print(v5.grad_fn._saved_self is v3)
+True

@@ -1,7 +1,7 @@
->>> import numpy as np, torch
->>> from pinn import Constrained, d, points
+>>> import torch
+>>> from pinn import MLP, d, points
 >>> _ = torch.manual_seed(0)
->>> net = Constrained(lambda x: x**2 * torch.cos(np.pi * x), [64, 64])
+>>> net = MLP([2, 64, 64, 1])
 >>> X = points([(-1.0, 1.0), (0.0, 5.0)], 1000)                 #<1>
 >>> u = net(X)
 >>> u_x, u_t = d(u, X).split(1, dim=1)                          #<2>
